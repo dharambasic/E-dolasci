@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Studenti.Models
 {
-    public class ApplicationUser:IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [MaxLength(36)]
         public override string Id { get; set; }

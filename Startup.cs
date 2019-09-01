@@ -13,6 +13,7 @@ using Studenti.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Studenti.Models;
 
 namespace Studenti
 {
@@ -35,6 +36,14 @@ namespace Studenti
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<IdentityOptions>(x =>
+            {
+                x.Password.RequireDigit = false;
+                x.Password.RequiredLength = 4;
+                x.Password.RequireNonAlphanumeric = false;
+                x.Password.RequireUppercase = false;
+            });
+
             services.AddDbContextPool<ApplicationDbContext>( // replace "YourDbContext" with the class name of your DbContext
                 options => options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection"), // replace with your Connection String
@@ -44,10 +53,17 @@ namespace Studenti
                     }
             ));
 
-            services.AddDefaultIdentity<IdentityUser>()
+
+
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

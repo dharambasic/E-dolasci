@@ -8,34 +8,48 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Studenti.Data;
+using Studenti.Models;
+using Studenti.Utility;
 
 namespace Studenti.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
+    //[Authorize(Roles = StaticDetails.AdminRole)]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _db;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext db,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _db = db;
+            _roleManager = roleManager;
+            
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public List<SelectListItem> RoleList;
 
         public class InputModel
         {
@@ -54,11 +68,37 @@ namespace Studenti.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
+            [Required]
+            [Display(Name = "Surname")]
+            public string Surname { get; set; }
+
+            [Required]
+            [Display(Name = "JMBAG")]
+            public string JMBAG { get; set; }
+
+            [Required]
+            [Display(Name="Role")]
+            public string Role { get; set; }
+
+
         }
 
         public void OnGet(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+
+            if (RoleList == null) {
+                RoleList = new List<SelectListItem>();
+            }
+
+            RoleList.Add(new SelectListItem(StaticDetails.ProfessorRole, StaticDetails.ProfessorRole));
+            RoleList.Add(new SelectListItem(StaticDetails.StudentRole, StaticDetails.StudentRole));
+            RoleList.Add(new SelectListItem(StaticDetails.AdminRole, StaticDetails.AdminRole));
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -66,10 +106,34 @@ namespace Studenti.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Name = Input.Name,
+                    Surname = Input.Surname,
+                    JMBAG = Input.JMBAG
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.AdminRole))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.AdminRole));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.ProfessorRole))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.ProfessorRole));
+                    }
+
+                    if (!await _roleManager.RoleExistsAsync(StaticDetails.StudentRole))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(StaticDetails.StudentRole));
+                    }
+
+                    await _userManager.AddToRoleAsync(user, Input.Role);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

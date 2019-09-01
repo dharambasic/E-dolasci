@@ -9,19 +9,29 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Studenti.Models;
+using Studenti.Utility;
 
 namespace Studenti.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, 
+            ILogger<LoginModel> logger,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -59,6 +69,8 @@ namespace Studenti.Areas.Identity.Pages.Account
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+             //CreateAdminIfDoesntExist();
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -98,5 +110,64 @@ namespace Studenti.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        public async void CreateAdminIfDoesntExist(string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "admin@admin.com",
+                    Email = "admin@admin.com",
+                    Name = "Admin",
+                    Surname = "Admin",
+                    JMBAG = "111111111"
+                };
+                //var result = await _userManager.CreateAsync(user, "Admin1234");
+
+                var result = await _signInManager.PasswordSignInAsync(user.Email, "Admin1234",false,false);
+
+                if (!result.Succeeded)
+                {
+                    var creationResult = await _userManager.CreateAsync(user, "Admin1234");
+
+                    if (creationResult.Succeeded) {
+                        if (!await _roleManager.RoleExistsAsync(StaticDetails.AdminRole))
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(StaticDetails.AdminRole));
+                        }
+
+                        if (!await _roleManager.RoleExistsAsync(StaticDetails.ProfessorRole))
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(StaticDetails.ProfessorRole));
+                        }
+
+                        if (!await _roleManager.RoleExistsAsync(StaticDetails.StudentRole))
+                        {
+                            await _roleManager.CreateAsync(new IdentityRole(StaticDetails.StudentRole));
+                        }
+
+                        await _userManager.AddToRoleAsync(user, StaticDetails.AdminRole);
+
+                        _logger.LogInformation("User created a new account with password.");
+
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Page(
+                            "/Account/ConfirmEmail",
+                            pageHandler: null,
+                            values: new { userId = user.Id, code = code },
+                            protocol: Request.Scheme);
+
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        LocalRedirect(returnUrl);
+                    }
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            //return null;
+        }
+
     }
 }
