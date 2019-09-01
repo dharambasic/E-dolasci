@@ -68,6 +68,8 @@ namespace Studenti
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseStaticFiles();
+
             app.UseAuthentication();
 
             app.UseMvc(routes =>
