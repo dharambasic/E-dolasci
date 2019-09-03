@@ -70,7 +70,9 @@ namespace Studenti.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-             //CreateAdminIfDoesntExist();
+            //CreateAdminIfDoesntExist();
+
+            //CreateAdminIfDoesntExist();
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -111,7 +113,7 @@ namespace Studenti.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public async void CreateAdminIfDoesntExist(string returnUrl = null)
+        public async Task<IActionResult> CreateAdminIfDoesntExist(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
@@ -126,13 +128,14 @@ namespace Studenti.Areas.Identity.Pages.Account
                 };
                 //var result = await _userManager.CreateAsync(user, "Admin1234");
 
-                var result = await _signInManager.PasswordSignInAsync(user.Email, "Admin1234",false,false);
+                var result = await _signInManager.PasswordSignInAsync(user.Email, "Admin1234", false, false);
 
                 if (!result.Succeeded)
                 {
                     var creationResult = await _userManager.CreateAsync(user, "Admin1234");
 
-                    if (creationResult.Succeeded) {
+                    if (creationResult.Succeeded)
+                    {
                         if (!await _roleManager.RoleExistsAsync(StaticDetails.AdminRole))
                         {
                             await _roleManager.CreateAsync(new IdentityRole(StaticDetails.AdminRole));
@@ -160,13 +163,14 @@ namespace Studenti.Areas.Identity.Pages.Account
                             protocol: Request.Scheme);
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        LocalRedirect(returnUrl);
+                        return LocalRedirect(returnUrl);
                     }
                 }
             }
 
             // If we got this far, something failed, redisplay form
             //return null;
+            return new OkResult();
         }
 
     }

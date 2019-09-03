@@ -13,8 +13,13 @@ namespace Studenti.Controllers
     //[Authorize(Roles = StaticDetails.AdminRole)]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public HomeController()
         {
+
+        }
+        public IActionResult Index()
+        { 
+            //ViewData.Model = new ClassAttend();
             return View();
         }
 

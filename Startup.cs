@@ -53,8 +53,6 @@ namespace Studenti
                     }
             ));
 
-
-
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()

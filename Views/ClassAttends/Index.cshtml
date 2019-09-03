@@ -1,0 +1,39 @@
+﻿@model List<Studenti.Controllers.ClassAttendsController.DisplayAttend>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Attend class</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <input type="submit" value="Attend" class="btn btn-default" />
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                JMBAG
+            </th>
+            <th>
+                Logged Time
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JMBAG)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoggedTime)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

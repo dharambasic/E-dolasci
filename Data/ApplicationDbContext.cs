@@ -11,6 +11,14 @@ namespace Studenti.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser,IdentityRole, string>
     {
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ClassAttend> ClassAttends { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
