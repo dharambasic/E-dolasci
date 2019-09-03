@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Studenti.Data;
 using Studenti.Models;
@@ -98,7 +99,7 @@ namespace Studenti.Areas.Identity.Pages.Account
 
             RoleList.Add(new SelectListItem(StaticDetails.ProfessorRole, StaticDetails.ProfessorRole));
             RoleList.Add(new SelectListItem(StaticDetails.StudentRole, StaticDetails.StudentRole));
-            RoleList.Add(new SelectListItem(StaticDetails.AdminRole, StaticDetails.AdminRole));
+            //RoleList.Add(new SelectListItem(StaticDetails.AdminRole, StaticDetails.AdminRole));
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -130,6 +131,12 @@ namespace Studenti.Areas.Identity.Pages.Account
                     if (!await _roleManager.RoleExistsAsync(StaticDetails.StudentRole))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(StaticDetails.StudentRole));
+                    }
+
+                    var userCheck = await _userManager.Users.ToListAsync();
+
+                    if (userCheck.Count == 1) {
+                        Input.Role = StaticDetails.AdminRole;
                     }
 
                     await _userManager.AddToRoleAsync(user, Input.Role);

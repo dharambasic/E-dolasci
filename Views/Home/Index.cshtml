@@ -1,13 +1,28 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@{
     ViewData["Title"] = "Home Page";
 }
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
-    <div class="container">
-        <div class="jumbotron"style="margin-top:15px;">
-            <h1>Welcome to MEV!</h1>
-            <p>Please register attend the class!</p>
+
+<div class="container">
+    <div class="jumbotron" style="margin-top:15px;">
+        <h1>Welcome to MEV!</h1>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <p>Please attend the class!</p>
             <p>
                 <a class="btn btn-primary btn-lg" asp-area="" asp-controller="ClassAttends" asp-action="Index">Attend class</a>
             </p>
-        </div>
+        }
+        else
+        {
+            <p>Please register to attend the class!</p>
+            <p>
+                <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </p>
+        }
+
     </div>
+</div>
