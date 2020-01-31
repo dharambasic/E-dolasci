@@ -15,49 +15,79 @@ namespace Studenti.Controllers
     public class ClassAttendsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Korisnik> _userManager;
 
         public class DisplayAttend
         {
             public string JMBAG { get; set; }
             public DateTime LoggedTime { get; set; }
 
-            public DisplayAttend(string jMBAG, DateTime loggedTime)
+            public string Name { get; set; }
+            public string Surname { get; set; }
+
+
+         
+            public DisplayAttend()
+            {
+
+            }
+
+            public DisplayAttend(string name, string surname, string jMBAG, DateTime loggedTime )
             {
                 JMBAG = jMBAG;
+                Name = name;
+                Surname = surname;
                 LoggedTime = loggedTime;
+             
+         
             }
+
+           
+          
+
+            
         }
 
-        public ClassAttendsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ClassAttendsController(ApplicationDbContext context, UserManager<Korisnik> userManager)
         {
             _context = context;
             _userManager = userManager;
+          
+          
         }
+
+
+      
+
 
         // GET: ClassAttends
         public async Task<IActionResult> Index()
         {
-            var UserList = await _userManager.Users.ToListAsync();
+           var UserList = await _userManager.Users.ToListAsync();
             var currentUser = await _userManager.GetUserAsync(User);
             bool isStudent = await _userManager.IsInRoleAsync(currentUser, StaticDetails.StudentRole);
             List<ClassAttend> classAttends = null;
+            
             if (isStudent)
-            {
-                classAttends= await _context.ClassAttends.Where(ca => ca.IdentityUserId == currentUser.Id).ToListAsync();
+            {   
+                classAttends = await _context.ClassAttends.Where(ca => ca.IdentityUserId == currentUser.Id).ToListAsync();
+               
+               
             }
             else {
+
                 classAttends = await _context.ClassAttends.ToListAsync();
             }
 
-            List<DisplayAttend> data = new List<DisplayAttend>();
+           List<DisplayAttend> data = new List<DisplayAttend>();
 
             foreach (ClassAttend ca in classAttends)
             {
-                data.Add(new DisplayAttend(UserList.FirstOrDefault(u => u.Id == ca.IdentityUserId).JMBAG, ca.LoggedTime));
+                data.Add(new DisplayAttend(UserList.FirstOrDefault(u => u.Id == ca.IdentityUserId).Name, UserList.FirstOrDefault (u=> u.Id == ca.IdentityUserId).Surname, UserList.FirstOrDefault(u => u.Id == ca.IdentityUserId).JMBAG, ca.LoggedTime));
+
+
             }
-
-
+            
             return View(data);
         }
 
@@ -71,7 +101,7 @@ namespace Studenti.Controllers
 
             var currentUser = await _userManager.GetUserAsync(User);
 
-            ClassAttend classAttend = new ClassAttend(currentUser.Id, DateTime.Now);
+            ClassAttend classAttend = new ClassAttend(currentUser.Id, currentUser.Name, currentUser.Surname, DateTime.Now);
 
             if (ModelState.IsValid)
             {
@@ -81,5 +111,8 @@ namespace Studenti.Controllers
             }
             return View(classAttend);
         }
+
+
+       
     }
-}
+    }

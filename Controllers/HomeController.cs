@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Studenti.Models;
 using Studenti.Utility;
@@ -13,6 +14,9 @@ namespace Studenti.Controllers
     //[Authorize(Roles = StaticDetails.AdminRole)]
     public class HomeController : Controller
     {
+
+     
+
         public HomeController()
         {
 
@@ -22,6 +26,9 @@ namespace Studenti.Controllers
             //ViewData.Model = new ClassAttend();
             return View();
         }
+
+    
+      
 
         public IActionResult About()
         {
@@ -48,4 +55,9 @@ namespace Studenti.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
+
+
 }
+
+

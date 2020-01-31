@@ -1,0 +1,33 @@
+﻿@model Studenti.Models.Kolegiji
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Kolegiji</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.kolegijIme)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.kolegijIme)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.kolegijGodinaID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.kolegijGodinaID)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="kolegijID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

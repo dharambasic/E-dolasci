@@ -1,21 +1,92 @@
-﻿@model List<Studenti.Controllers.ClassAttendsController.DisplayAttend>
+﻿@using Microsoft.AspNetCore.Identity
+@model List<Studenti.Controllers.ClassAttendsController.DisplayAttend>
 
 @{
     ViewData["Title"] = "Index";
 }
 
+
+@inject SignInManager<Korisnik> SignInManager
+@inject UserManager<Korisnik> UserManager
+
+<style>
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 60px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+</style>
+
 <h2>Attend class</h2>
 
 <form asp-action="Create">
+
+
     <div class="form-group">
+
         <input type="submit" value="Attend" class="btn btn-default" />
     </div>
 </form>
+
+<form asp-controller="Korisniks" asp-action="Index">
+
+    <div class="form-actions no-color">
+
+        <p style="margin-top:20px">
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-success btn-sm" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
+
         <tr>
             <th>
                 JMBAG
+            </th>
+            <th>
+                Ime
+            </th>
+            <th>
+                Prezime
             </th>
             <th>
                 Logged Time
@@ -29,10 +100,21 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.JMBAG)
+
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.LoggedTime)
                 </td>
+
             </tr>
         }
     </tbody>

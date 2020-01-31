@@ -1,0 +1,30 @@
+﻿@model Studenti.Models.Kolegiji
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Kolegiji</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.kolegijIme)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.kolegijIme)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.kolegijGodinaID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.kolegijGodinaID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.kolegijID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -128,11 +128,44 @@ namespace Studenti.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Studenti.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Studenti.Models.ClassAttend", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("IdentityUserId");
+
+                    b.Property<DateTime>("LoggedTime");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Surname");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClassAttends");
+                });
+
+            modelBuilder.Entity("Studenti.Models.Kolegiji", b =>
+                {
+                    b.Property<string>("kolegijID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("kolegijGodinaID")
+                        .IsRequired();
+
+                    b.Property<string>("kolegijIme")
+                        .IsRequired();
+
+                    b.HasKey("kolegijID");
+
+                    b.ToTable("Kolegiji");
+                });
+
+            modelBuilder.Entity("Studenti.Models.Korisnik", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(36);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -188,20 +221,6 @@ namespace Studenti.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Studenti.Models.ClassAttend", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("IdentityUserId");
-
-                    b.Property<DateTime>("LoggedTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClassAttends");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -212,7 +231,7 @@ namespace Studenti.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Studenti.Models.ApplicationUser")
+                    b.HasOne("Studenti.Models.Korisnik")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -220,7 +239,7 @@ namespace Studenti.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Studenti.Models.ApplicationUser")
+                    b.HasOne("Studenti.Models.Korisnik")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -233,7 +252,7 @@ namespace Studenti.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Studenti.Models.ApplicationUser")
+                    b.HasOne("Studenti.Models.Korisnik")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -241,7 +260,7 @@ namespace Studenti.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Studenti.Models.ApplicationUser")
+                    b.HasOne("Studenti.Models.Korisnik")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

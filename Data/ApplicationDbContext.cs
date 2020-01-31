@@ -8,9 +8,9 @@ using Studenti.Models;
 
 namespace Studenti.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,IdentityRole, string>
+    public class ApplicationDbContext : IdentityDbContext<Korisnik,IdentityRole, string>
     {
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Korisnik> ApplicationUsers { get; set; }
         public DbSet<ClassAttend> ClassAttends { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -23,5 +23,9 @@ namespace Studenti.Data
             : base(options)
         {
         }
+
+        public DbSet<Studenti.Models.Korisnik> Korisnik { get; set; }
+
+        public DbSet<Studenti.Models.Kolegiji> Kolegiji { get; set; }
     }
 }

@@ -1,10 +1,11 @@
 ﻿
+
 @using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "Home Page";
 }
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<Korisnik> SignInManager
+@inject UserManager<Korisnik> UserManager
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,62 +23,97 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+
+    <style>
+
+        <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Lato", sans-serif
+        }
+
+        .w3-bar, h1, button {
+            font-family: "Montserrat", sans-serif
+        }
+
+        .fa-anchor, .fa-coffee {
+            font-size: 200px
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+   
+
+    </style>
 </head>
+
+
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Studenti</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <li><a asp-area="" asp-controller="ClassAttends" asp-action="Index">Attend</a></li>
-                    }
-                </ul>
-                <partial name="_LoginPartial" />
-            </div>
-        </div>
-    </nav>
 
-    <partial name="_CookieConsentPartial" />
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2019 - Studenti</p>
-        </footer>
+    <div class="w3-top">
+        <div class="w3-bar w3-cyan w3-card w3-left-allign w3-large"
+             <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-blue" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+               <a asp-controller="Home" asp-action="Index" class="w3-bar-item w3-large w3-button w3-hide-small w3-left-align w3-padding-large w3-hover-white"> E-Dolasci <i class="fa fa-home"></i></a>
+
+    
+
+ <partial name="_LoginPartial" />
+
     </div>
+            
+ </div>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
 
-    @RenderSection("Scripts", required: false)
+    
+  
+               
+
+                <partial name="_CookieConsentPartial" />
+
+                <div class="container body-content">
+                    @RenderBody()
+                    <hr />
+                    
+                        <footer>
+                        
+
+                                <img src="~/images/logo.jpg"  alt="Logo" height="70" width="70" />
+                               
+                                <p w3-large w3-cen style="margin-left:500px">&copy; 2019 - Studenti</p>
+                            
+                            </footer>
+                   
+                </div>
+
+                <environment include="Development">
+                    <script src="~/lib/jquery/dist/jquery.js"></script>
+                    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+                    <script src="~/js/site.js" asp-append-version="true"></script>
+                </environment>
+                <environment exclude="Development">
+                    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                            asp-fallback-test="window.jQuery"
+                            crossorigin="anonymous"
+                            integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+                    </script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                            crossorigin="anonymous"
+                            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+                    </script>
+                    <script src="~/js/site.min.js" asp-append-version="true"></script>
+                </environment>
+
+                @RenderSection("Scripts", required: false)
 </body>
 </html>

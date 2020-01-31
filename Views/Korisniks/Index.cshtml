@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Studenti.Models
+@model IEnumerable<Studenti.Models.Korisnik>
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Search</h2>
+
+
+<form asp-action="Index" method="get" >
+
+    <div class="form-actions no-color">
+
+        <p style="margin-top:20px">
+            <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-success btn-sm" /> |
+            <a asp-controller="ClassAttends" asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                JMBAG
+            </th>
+            <th>
+                Ime
+            </th>
+            <th>
+                Prezime
+            </th>
+          
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.JMBAG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+           </td>
+            
+        
+
+
+
+        </tr>
+        }
+    </tbody>
+</table>

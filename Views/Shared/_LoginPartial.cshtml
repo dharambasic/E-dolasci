@@ -1,30 +1,53 @@
 @using Microsoft.AspNetCore.Identity
+@using Studenti.Areas;
 @using Studenti.Utility;
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+
+@inject SignInManager<Korisnik> SignInManager
+@inject UserManager<Korisnik> UserManager
+
+
 
 @if (SignInManager.IsSignedIn(User))
 {
+    <a class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" asp-area="" asp-controller="ClassAttends" asp-action="Index">Attend</a>
     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
-            @*@if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), StaticDetails.AdminRole))
-            {*@
-            @*}*@
+
+
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
-            </li>
-            <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <button type="submit" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-margin-right w3-hover-white">Logout</button>
             </li>
 
+
+
         </ul>
+
+
+     
+
+      
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result.Name @UserManager.GetUserAsync(User).Result.Surname </a>
+                </li>
+            </ul>
+
+
+       
+
+
+
     </form>
 }
 else
 {
+
     <ul class="nav navbar-nav navbar-right">
         <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
         <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
     </ul>
+
 }
+
+

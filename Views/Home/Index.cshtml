@@ -1,28 +1,79 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Naslovna stranica";
 }
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
 
 
-<div class="container">
-    <div class="jumbotron" style="margin-top:15px;">
-        <h1>Welcome to MEV!</h1>
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <p>Please attend the class!</p>
-            <p>
-                <a class="btn btn-primary btn-lg" asp-area="" asp-controller="ClassAttends" asp-action="Index">Attend class</a>
-            </p>
-        }
-        else
-        {
-            <p>Please register to attend the class!</p>
-            <p>
-                <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            </p>
-        }
+@{
+    Layout = "_Layout";
+}
+
+
+
+@inject SignInManager<Korisnik> SignInManager
+@inject UserManager<Korisnik> UserManager
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+ 
+
+    p {
+        text-align:left;
+        color:black;
+        font-family:'Times New Roman';
+        font-size:medium;
+        
+            
+
+
+    }
+
+
+
+    
+
+
+
+</style>
+
+
+
+<header>
+
+    <div class="w3-container w3-cyan w3-center" style="padding:128px 16px">
+        <h1 class="w3-jumbo w3-text-black"> Dobrodošli na našu stranicu E-Dolasci! </h1>
+        <div class=""
+
 
     </div>
-</div>
+
+
+</header>
+
+
+
+<body>
+    
+   
+    <div>
+       
+
+    </div>
+    <div class="w3-row-padding w3-padding-64 w3-container">
+        <div class="w3-content">
+            <div class="w3-twothird">
+
+                <h1 w3-padding-64 w3-left w3-jumbo> O nama</h1>
+                <h4 w3-padding-64> Ovdje možete saznati sve o tome kolko ste izostajali i koliko možete jos izostajat :) </h4>
+
+           
+
+
+            </div>
+
+        </div>
+        
+  
+</body>

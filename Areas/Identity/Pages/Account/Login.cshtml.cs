@@ -17,16 +17,16 @@ namespace Studenti.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<Korisnik> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Korisnik> _userManager;
 
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, 
+        public LoginModel(SignInManager<Korisnik> signInManager, 
             ILogger<LoginModel> logger,
             RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<Korisnik> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -118,13 +118,14 @@ namespace Studenti.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var user = new Korisnik
                 {
                     UserName = "admin@admin.com",
                     Email = "admin@admin.com",
                     Name = "Admin",
                     Surname = "Admin",
-                    JMBAG = "111111111"
+                    JMBAG = "111111111",
+                   
                 };
                 //var result = await _userManager.CreateAsync(user, "Admin1234");
 

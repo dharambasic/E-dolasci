@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Studenti.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Studenti.Data;
 using Studenti.Models;
+using System;
 
 namespace Studenti
 {
@@ -42,6 +38,8 @@ namespace Studenti
                 x.Password.RequiredLength = 4;
                 x.Password.RequireNonAlphanumeric = false;
                 x.Password.RequireUppercase = false;
+                x.User.AllowedUserNameCharacters = "aąäábcčćdďđeęéěfghiíjklłmnńňoøóöpqrřsšśtťuúüůvwxyýzžźżAĄÄÁBCČĆDĎĐEÉĚĘFGHIÍJKLŁMNŃŇOØÓÖPQRŘSŠŚTŤUÜŮÚVWXYÝZŽŹŻ0123456789ß-._@+";
+
             });
 
             services.AddDbContextPool<ApplicationDbContext>( // replace "YourDbContext" with the class name of your DbContext
@@ -53,7 +51,7 @@ namespace Studenti
                     }
             ));
 
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddDefaultIdentity<Korisnik>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddDefaultUI()
