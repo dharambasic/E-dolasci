@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Studenti.Models
 {
-    public class ClassAttend
+    public class ClassAttend 
     {
         [Key]
         public int Id { get; set; }

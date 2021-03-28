@@ -184,6 +184,8 @@ namespace Studenti.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<DateTime>("LoggedTime");
+
                     b.Property<string>("Name")
                         .HasMaxLength(50);
 

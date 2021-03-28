@@ -11,6 +11,7 @@ namespace Studenti.Models
     public class Korisnik : IdentityUser
 
     {
+ 
         [MaxLength(36)]
         public string Email { get; set; }
         [MaxLength(50)]
@@ -19,7 +20,8 @@ namespace Studenti.Models
         public string Surname { get; set; }
         [MaxLength(10)]
         public string JMBAG { get; set; }
-       
+
+    
        
     
 

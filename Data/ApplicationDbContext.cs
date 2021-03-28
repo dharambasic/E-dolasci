@@ -27,5 +27,7 @@ namespace Studenti.Data
         public DbSet<Studenti.Models.Korisnik> Korisnik { get; set; }
 
         public DbSet<Studenti.Models.Kolegiji> Kolegiji { get; set; }
+
+        
     }
 }

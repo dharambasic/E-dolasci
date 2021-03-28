@@ -57,8 +57,8 @@ namespace Studenti.Controllers
         }
 
 
-      
 
+       
 
         // GET: ClassAttends
         public async Task<IActionResult> Index()
